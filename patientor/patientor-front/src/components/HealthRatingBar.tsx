@@ -9,12 +9,12 @@ type BarProps = {
 };
 
 const StyledRating = styled(Rating)({
-  iconFilled: {
-    color: "#ff6d75",
+  '& .MuiRating-iconFilled': {
+    color: '#ff6d75',
   },
-  iconHover: {
-    color: "#ff3d47",
-  }
+  '& .MuiRating-iconHover': {
+    color: '#ff3d47',
+  },
 });
 
 const HEALTHBAR_TEXTS = [
