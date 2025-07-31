@@ -19,4 +19,12 @@ export interface Patient {
   dateOfBirth?: string;
 }
 
-export type PatientFormValues = Omit<Patient, "id" | "entries">;
+export interface NewPatient {
+  name: string;
+  occupation: string;
+  gender: Gender;
+  ssn?: string;
+  dateOfBirth: string;
+}
+
+export type PatientFormValues = NewPatient;

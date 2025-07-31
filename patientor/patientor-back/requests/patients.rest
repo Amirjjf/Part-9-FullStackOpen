@@ -1,0 +1,49 @@
+### Get all patients
+GET http://localhost:3001/api/patients
+
+### Create a new patient with valid data
+POST http://localhost:3001/api/patients
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "dateOfBirth": "1985-06-15",
+  "ssn": "123-45-6789",
+  "gender": "male",
+  "occupation": "Software Engineer"
+}
+
+### Test with invalid gender
+POST http://localhost:3001/api/patients
+Content-Type: application/json
+
+{
+  "name": "Jane Doe",
+  "dateOfBirth": "1990-03-20",
+  "ssn": "987-65-4321",
+  "gender": "invalid",
+  "occupation": "Designer"
+}
+
+### Test with missing required field
+POST http://localhost:3001/api/patients
+Content-Type: application/json
+
+{
+  "name": "Bob Smith",
+  "dateOfBirth": "1975-12-10",
+  "ssn": "555-66-7777",
+  "occupation": "Teacher"
+}
+
+### Test with empty strings
+POST http://localhost:3001/api/patients
+Content-Type: application/json
+
+{
+  "name": "",
+  "dateOfBirth": "",
+  "ssn": "",
+  "gender": "female",
+  "occupation": ""
+}
