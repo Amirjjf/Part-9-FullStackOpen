@@ -1,10 +1,49 @@
-import patientsData from "../data/patients";
-import { Patient, Gender, NonSensitivePatient } from "../types";
+import patientsData, { RawPatient, RawEntry } from "../data/patients";
+import {
+  Patient,
+  Gender,
+  NonSensitivePatient,
+  NewPatient,
+  Entry,
+  HospitalEntry,
+  OccupationalHealthcareEntry,
+} from "../types";
 import { v1 as uuid } from "uuid";
 
-const patients: Patient[] = patientsData.map((obj) => ({
-  ...obj,
+const mapEntry = (e: RawEntry): Entry => {
+  if (e.type === "Hospital") {
+    const mapped: HospitalEntry = {
+      id: e.id,
+      type: "Hospital",
+      date: e.date,
+      specialist: e.specialist,
+      description: e.description,
+      diagnoseCodes: e.diagnoseCodes,
+      discharge: e.discharge,
+    };
+    return mapped;
+  }
+  const mapped: OccupationalHealthcareEntry = {
+    id: e.id,
+    type: "OccupationalHealthcare",
+    date: e.date,
+    specialist: e.specialist,
+    description: e.description,
+    diagnoseCodes: e.diagnoseCodes,
+    employerName: e.employerName,
+    sickLeave: e.sickLeave,
+  };
+  return mapped;
+};
+
+const patients: Patient[] = patientsData.map((obj: RawPatient) => ({
+  id: obj.id,
+  name: obj.name,
+  dateOfBirth: obj.dateOfBirth,
+  ssn: obj.ssn,
   gender: obj.gender as Gender,
+  occupation: obj.occupation,
+  entries: (obj.entries ?? []).map(mapEntry),
 }));
 
 const getEntries = (): Patient[] => {
@@ -15,18 +54,23 @@ const getNonSensitiveEntries = (): NonSensitivePatient[] => {
   return patients.map(({ ssn: _ssn, ...rest }) => rest);
 };
 
-const addPatient = (patient: Omit<Patient, "id">): Patient => {
+const addPatient = (patient: NewPatient): Patient => {
   const newPatient = {
     id: uuid(),
     ...patient,
+    entries: [],
   };
 
   patients.push(newPatient);
   return newPatient;
 };
 
+const findById = (id: string): Patient | undefined =>
+  patients.find((p) => p.id === id);
+
 export default {
   getEntries,
   getNonSensitiveEntries,
   addPatient,
+  findById,
 };
