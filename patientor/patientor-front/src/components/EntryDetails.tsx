@@ -1,7 +1,7 @@
 import { Box, Typography, Stack, Paper } from '@mui/material';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import WorkIcon from '@mui/icons-material/Work';
-import { Diagnosis, Entry, HospitalEntry, OccupationalHealthcareEntry } from '../types';
+import { Diagnosis, Entry, HospitalEntry, OccupationalHealthcareEntry, HealthCheckEntry, HealthCheckRating } from '../types';
 
 type Props = {
   entry: Entry;
@@ -41,6 +41,19 @@ const OccupationalDetails = ({ entry }: { entry: OccupationalHealthcareEntry }) 
   </Stack>
 );
 
+const ratingText: Record<HealthCheckRating, string> = {
+  [HealthCheckRating.Healthy]: 'Healthy',
+  [HealthCheckRating.LowRisk]: 'Low risk',
+  [HealthCheckRating.HighRisk]: 'High risk',
+  [HealthCheckRating.CriticalRisk]: 'Critical risk'
+};
+
+const HealthCheckDetails = ({ entry }: { entry: HealthCheckEntry }) => (
+  <Stack spacing={0.5}>
+    <Typography variant="body2">Health check rating: {entry.healthCheckRating} ({ratingText[entry.healthCheckRating]})</Typography>
+  </Stack>
+);
+
 const EntryDetails = ({ entry, diagnoses }: Props) => {
   return (
     <Paper variant="outlined" sx={{ p: 2 }}>
@@ -59,6 +72,8 @@ const EntryDetails = ({ entry, diagnoses }: Props) => {
               return <HospitalDetails entry={entry} />;
             case 'OccupationalHealthcare':
               return <OccupationalDetails entry={entry} />;
+            case 'HealthCheck':
+              return <HealthCheckDetails entry={entry} />;
             default:
               return assertNever(entry);
           }

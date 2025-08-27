@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { Gender } from './types';
+import { Gender, HealthCheckRating } from './types';
 
 export const NewPatientSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -39,7 +39,13 @@ const OccupationalHealthcareEntrySchema = BaseEntrySchema.extend({
   sickLeave: SickLeaveSchema.optional()
 });
 
+const HealthCheckEntrySchema = BaseEntrySchema.extend({
+  type: z.literal('HealthCheck'),
+  healthCheckRating: z.nativeEnum(HealthCheckRating)
+});
+
 export const NewEntrySchema = z.discriminatedUnion('type', [
   HospitalEntrySchema,
-  OccupationalHealthcareEntrySchema
+  OccupationalHealthcareEntrySchema,
+  HealthCheckEntrySchema
 ]);

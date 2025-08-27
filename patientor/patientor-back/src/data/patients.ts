@@ -1,7 +1,6 @@
 export type RawBaseEntry = {
     id: string;
     date: string;
-    type: 'Hospital' | 'OccupationalHealthcare';
     specialist: string;
     description: string;
     diagnoseCodes?: string[];
@@ -24,7 +23,12 @@ export type RawOccupationalHealthcareEntry = RawBaseEntry & {
     };
 };
 
-export type RawEntry = RawHospitalEntry | RawOccupationalHealthcareEntry;
+export type RawHealthCheckEntry = RawBaseEntry & {
+    type: 'HealthCheck';
+    healthCheckRating: number;
+};
+
+export type RawEntry = RawHospitalEntry | RawOccupationalHealthcareEntry | RawHealthCheckEntry;
 
 export type RawPatient = {
     id: string;

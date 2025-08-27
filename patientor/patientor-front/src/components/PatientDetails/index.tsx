@@ -4,6 +4,7 @@ import { Box, CircularProgress, Typography, Link, Stack, Paper } from "@mui/mate
 import patientService from "../../services/patients";
 import { Diagnosis, Entry, Patient } from "../../types";
 import EntryDetails from "../EntryDetails";
+import AddEntryForm from "../AddEntryForm";
 
 interface Props { diagnoses: Diagnosis[] }
 
@@ -42,6 +43,10 @@ const PatientDetails = ({ diagnoses }: Props) => {
 
       <Box>
         <Typography variant="h6">Entries</Typography>
+        <AddEntryForm
+          patientId={patient.id}
+          onCreated={(entry) => setPatient({ ...patient, entries: [...(patient.entries ?? []), entry as Entry] })}
+        />
         {patient.entries && patient.entries.length > 0 ? (
           <Stack spacing={1}>
             {patient.entries.map((e: Entry) => (

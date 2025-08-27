@@ -1,4 +1,5 @@
-import patientsData, { RawPatient, RawEntry } from "../data/patients";
+import patientsData from "../data/patients";
+import type { RawPatient, RawEntry } from "../data/patients";
 import {
   Patient,
   Gender,
@@ -7,6 +8,7 @@ import {
   Entry,
   HospitalEntry,
   OccupationalHealthcareEntry,
+  HealthCheckEntry,
 } from "../types";
 import { v1 as uuid } from "uuid";
 
@@ -21,6 +23,18 @@ const mapEntry = (e: RawEntry): Entry => {
       diagnoseCodes: e.diagnoseCodes,
       discharge: e.discharge,
     };
+    return mapped;
+  }
+  if (e.type === "HealthCheck") {
+    const mapped: HealthCheckEntry = {
+      id: e.id,
+      type: "HealthCheck",
+      date: e.date,
+      specialist: e.specialist,
+      description: e.description,
+      diagnoseCodes: e.diagnoseCodes,
+      healthCheckRating: e.healthCheckRating,
+    } as HealthCheckEntry;
     return mapped;
   }
   const mapped: OccupationalHealthcareEntry = {
