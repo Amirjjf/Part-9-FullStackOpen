@@ -3,6 +3,7 @@ import { useParams, Link as RouterLink } from "react-router-dom";
 import { Box, CircularProgress, Typography, Link, Stack, Paper } from "@mui/material";
 import patientService from "../../services/patients";
 import { Diagnosis, Entry, Patient } from "../../types";
+import EntryDetails from "../EntryDetails";
 
 interface Props { diagnoses: Diagnosis[] }
 
@@ -31,8 +32,6 @@ const PatientDetails = ({ diagnoses }: Props) => {
   if (error) return <Typography color="error">{error}</Typography>;
   if (!patient) return <Typography>No patient found.</Typography>;
 
-  const getDiagName = (code: string) => diagnoses.find(d => d.code === code)?.name;
-
   return (
     <Stack spacing={2}>
       <Typography variant="h5">{patient.name}</Typography>
@@ -46,18 +45,7 @@ const PatientDetails = ({ diagnoses }: Props) => {
         {patient.entries && patient.entries.length > 0 ? (
           <Stack spacing={1}>
             {patient.entries.map((e: Entry) => (
-              <Paper key={e.id} variant="outlined" sx={{ p: 2 }}>
-                <Typography variant="subtitle2">{e.date} – {e.description}</Typography>
-                {e.diagnoseCodes && e.diagnoseCodes.length > 0 && (
-                  <Box component="ul" sx={{ pl: 3, my: 0 }}>
-                    {e.diagnoseCodes.map(code => (
-                      <li key={code}>
-                        <Typography variant="body2">{code} {getDiagName(code) ? `- ${getDiagName(code)}` : ''}</Typography>
-                      </li>
-                    ))}
-                  </Box>
-                )}
-              </Paper>
+              <EntryDetails key={e.id} entry={e} diagnoses={diagnoses} />
             ))}
           </Stack>
         ) : (

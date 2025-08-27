@@ -58,3 +58,5 @@ export interface Diagnosis {
 }
 
 export type NewPatient = Omit<Patient, 'id' | 'entries'>;
+
+export type NewEntry = Omit<Entry, 'id'>;
